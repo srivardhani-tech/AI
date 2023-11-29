@@ -1,0 +1,10 @@
+loves(john,mary).
+loves(jane,peter).
+loves(peter,alice).
+loves(john,alice).
+query :- loves(X,alice), write(X).
+
+
+output:
+?- loves(X,alice).
+X = peter
