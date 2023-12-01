@@ -1,0 +1,9 @@
+% Facts about planets
+planet(mercury, distance_sun(0.39), mass(0.0553)).  % Distance in AU, Mass in Earth masses
+planet(saturn, orbital_period(29.46), day_length(0.45)).  % Orbital period in Earth years, Day length in Earth days
+
+% Rule to find the distance between two planets based on their positions from the Sun
+distance_between(Planet1, Planet2, Distance) :-
+    planet(Planet1, distance_sun(Distance1)),
+    planet(Planet2, distance_sun(Distance2)),
+    Distance is abs(Distance1 - Distance2).
