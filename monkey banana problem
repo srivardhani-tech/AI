@@ -1,0 +1,52 @@
+class MonkeyBananaProblem:
+    def __init__(self):
+        self.initial_state = {
+            'monkey': (0, 0),  # Monkey's initial position (x, y)
+            'box': (1, 1),     # Box's initial position (x, y)
+            'banana': (2, 2)   # Banana's position (x, y)
+        }
+        self.goal_state = {'monkey': (2, 2)}
+
+    def actions(self, state):
+        possible_actions = []
+        monkey_x, monkey_y = state['monkey']
+        box_x, box_y = state['box']
+
+        # Monkey moves
+        possible_monkey_moves = [(monkey_x + dx, monkey_y + dy) for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]]
+        for move in possible_monkey_moves:
+            if 0 <= move[0] <= 2 and 0 <= move[1] <= 2 and move != (box_x, box_y):
+                possible_actions.append(('monkey', move))
+
+        # Box moves
+        possible_box_moves = [(box_x + dx, box_y + dy) for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]]
+        for move in possible_box_moves:
+            if 0 <= move[0] <= 2 and 0 <= move[1] <= 2 and move != state['monkey']:
+                possible_actions.append(('box', move))
+
+        return possible_actions
+
+    def result(self, state, action):
+        new_state = state.copy()
+        new_state[action[0]] = action[1]
+        return new_state
+
+    def goal_test(self, state):
+        return state['monkey'] == self.goal_state['monkey']
+
+    def path_cost(self, c, state1, action, state2):
+        return c + 1  # Uniform cost for each action
+
+# Example usage:
+problem = MonkeyBananaProblem()
+
+# Perform a search (e.g., using breadth-first search)
+from search import breadth_first_search
+
+solution = breadth_first_search(problem)
+if solution:
+    print("Solution found!")
+    for step, action in enumerate(solution):
+        print(f"Step {step + 1}: Move {action[0]} to {action[1]}")
+else:
+    print("No solution found.")
