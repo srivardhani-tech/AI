@@ -1,0 +1,32 @@
+# Importing necessary libraries
+import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense
+
+# Generating some dummy data
+# Input data
+X = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+# Output data (XOR gate)
+y = np.array([[0], [1], [1], [0]])
+
+# Creating a Sequential model
+model = Sequential()
+
+# Adding layers to the model
+model.add(Dense(4, input_dim=2, activation='relu'))  # Input layer with 4 neurons and ReLU activation
+model.add(Dense(1, activation='sigmoid'))  # Output layer with 1 neuron and Sigmoid activation
+
+# Compiling the model
+model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+
+# Training the model
+model.fit(X, y, epochs=1000, batch_size=4)
+
+# Evaluating the model
+loss, accuracy = model.evaluate(X, y)
+print(f"Loss: {loss}, Accuracy: {accuracy}")
+
+# Making predictions
+predictions = model.predict(X)
+print("Predictions:")
+print(predictions)
