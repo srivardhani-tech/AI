@@ -1,0 +1,27 @@
+% Facts: individuals with their names and DOBs
+dob(john, '1990-04-15').
+dob(sarah, '1985-10-22').
+dob(mike, '1978-07-30').
+dob(lisa, '1995-12-10').
+dob(emma, '1999-06-05').
+
+% Rule to retrieve the DOB of a specific person given their name
+get_dob(Name, DOB) :- dob(Name, DOB).
+
+% Rule to find individuals older than a certain age based on their DOBs
+older_than_age(Name, AgeLimit) :-
+    dob(Name, DOB),
+    % Calculate age based on DOB and compare with AgeLimit
+    % (You can use your preferred method to calculate age based on date)
+    % ...
+
+% Rule to determine the youngest person in the database
+youngest_person(Youngest, Age) :-
+    % Logic to find the youngest person
+    % ...
+
+% Rule to check if a specific person is older than another specific person
+is_older(Person1, Person2) :-
+    dob(Person1, DOB1),
+    dob(Person2, DOB2),
+    DOB1 @< DOB2.
