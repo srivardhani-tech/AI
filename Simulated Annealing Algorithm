@@ -1,0 +1,77 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import random
+import math
+
+# Function to calculate the total distance given a path
+def total_distance(path, distances):
+    total = 0
+    num_cities = len(path)
+    for i in range(num_cities - 1):
+        total += distances[path[i]][path[i + 1]]
+    total += distances[path[num_cities - 1]][path[0]]  # Return to the starting city
+    return total
+
+# Function to generate random initial path
+def generate_initial_path(num_cities):
+    return np.random.permutation(num_cities)
+
+# Function to perform Simulated Annealing
+def simulated_annealing(distances, num_iterations, initial_temperature, cooling_rate):
+    num_cities = len(distances)
+    current_path = generate_initial_path(num_cities)
+    current_distance = total_distance(current_path, distances)
+    
+    best_path = current_path.copy()
+    best_distance = current_distance
+    
+    temperature = initial_temperature
+    
+    for i in range(num_iterations):
+        # Generate a new candidate solution
+        new_path = current_path.copy()
+        index_a = random.randint(0, num_cities - 1)
+        index_b = random.randint(0, num_cities - 1)
+        new_path[index_a], new_path[index_b] = new_path[index_b], new_path[index_a]
+        
+        new_distance = total_distance(new_path, distances)
+        
+        # Accept the new solution if it's better or based on a probability
+        if new_distance < current_distance or random.random() < math.exp((current_distance - new_distance) / temperature):
+            current_distance = new_distance
+            current_path = new_path.copy()
+            
+            if current_distance < best_distance:
+                best_distance = current_distance
+                best_path = current_path.copy()
+        
+        # Cooling down the temperature
+        temperature *= cooling_rate
+    
+    return best_path, best_distance
+
+# Example distances between cities (replace this with your own distances)
+distances = np.array([
+    [0, 10, 15, 20],
+    [10, 0, 35, 25],
+    [15, 35, 0, 30],
+    [20, 25, 30, 0]
+])
+
+num_iterations = 10000
+initial_temperature = 1000.0
+cooling_rate = 0.99
+
+best_path, best_distance = simulated_annealing(distances, num_iterations, initial_temperature, cooling_rate)
+
+print(f"Best path found: {best_path}")
+print(f"Shortest distance: {best_distance}")
+
+# Plotting the best path
+plt.figure(figsize=(6, 6))
+plt.scatter(range(len(best_path)), best_path)
+plt.plot(range(len(best_path)), best_path, 'r--')
+plt.xlabel('Cities')
+plt.ylabel('Path')
+plt.title('Best Path found by Simulated Annealing')
+plt.show()
