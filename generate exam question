@@ -1,0 +1,42 @@
+ % Facts: Knowledge base
+student(john).
+student(sarah).
+student(mike).
+
+teacher(mr_smith).
+teacher(mrs_jones).
+teacher(dr_brown).
+
+subject(math).
+subject(science).
+subject(english).
+
+code(math, 101).
+code(science, 102).
+code(english, 103).
+
+% Rules to generate questions
+generate_question(student, Student) :-
+    student(Student),
+    format('~w is a student.', [Student]).
+
+generate_question(teacher, Teacher) :-
+    teacher(Teacher),
+    format('~w is a teacher.', [Teacher]).
+
+generate_question(subject, Subject) :-
+    subject(Subject),
+    format('~w is a subject.', [Subject]).
+
+generate_question(code, Subject, Code) :-
+    code(Subject, Code),
+    format('The code for ~w is ~w.', [Subject, Code]).
+
+% Generate questions based on the knowledge base
+generate_exam_questions :-
+    generate_question(student, _),
+    generate_question(teacher, _),
+    generate_question(subject, _),
+    generate_question(code, _, _).
+
+ԧ?- generate_exam_questions
